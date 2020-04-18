@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <h1>Welcome To Rock Paper Scissors!</h1>
+  <h4>Please press either 'r', 'p', or 's' on your keyboard to play</h4>
+  <div id="game"></div>
+
+  <script>
+    // declare user & computer scores
+    let compScore = 0
+    let userScore = 0
+
+    // function to handle key events
+    document.onkeyup = function (event) {
+
+      // array of game choices
+      let gameChoices = ['r', 'p', 's']
+
+      // every time the user chooses a new key, it randomly chooses a new one for the computer
+      let compChoice = gameChoices[Math.floor(Math.random() * 3)]
+
+      // grabs the specific key that the user pressed
+      let userChoice = event.key
+
+      // starts the result and message to no initial value
+      let result = null
+      let message = ''
+
+      // decides whether the user won, lost, or tied the game
+      switch (userChoice) {
+        case 'r':
+          result = (compChoice === 'r' ? 0 : (compChoice === 'p' ? -1 : 1))
+          break
+        case 'p':
+          result = (compChoice === 'p' ? 0 : (compChoice === 's' ? -1 : 1))
+          break
+        case 's':
+          result = (compChoice === 's' ? 0 : (compChoice === 'r' ? -1 : 1))
+          break
+        default:
+          result = null
+          break
+      }
+
+      // based on the game result, picks an appropriate message and cnages the user and computer scores
+      switch (result) {
+        case 0:
+          message = `It's a tie!`
+          break
+        case -1:
+          compScore++
+          message = `You lose!`
+          break
+        case 1:
+          userScore++
+          message = `You Win!`
+          break
+        default:
+          message = `Please choose a valid key!`
+          break
+      }
+
+      // creates a piece of html to display the game's results
+      let html = `
+      <h4>Computer's Choice : ${compChoice}</h4>
+      <h4>Your Choice : ${userChoice}</h4>
+      <h3>${message}</h3>
+      <h6>Computer's Score : ${compScore}</h6>
+      <h6>User's Score : ${userScore}</h6>
+      `
+
+      // puts the html into the game div
+      document.querySelector('#game').innerHTML = html
+    } 
+  </script>
+</body>
+
+</html>

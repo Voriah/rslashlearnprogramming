@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Trigger Clicked</title>
+
+  <!-- Added link to the jQuery Library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+  <h1>Click to Eat Sandwich</h1>
+  <div class="sandwichList">
+    <h3 id="pbj" class="mySandwiches">Peanut Butter Jelly</h3>
+    <h3 id="gc" class="mySandwiches">Grilled Cheese</h3>
+    <h3 id="rb" class="mySandwiches">Roast Beef</h3>
+  </div>
+
+  <form>
+    <label for="sandwich">Sandwich</label>
+    <input type="text" id="sandwich">
+    <button id="addSandwich">Add Sandwich</button>
+  </form>
+  <script type="text/javascript">
+
+    // This document.ready isn't necessary in this example... but is needed in cases where the HTML is complex.
+    // This code makes sure that the JavaScript doesn't get run until the HTML is finished loading
+    // It's useful to become familiar with now.
+
+    $(document).ready(function () {
+
+      // VARIABLES
+      // ====================================================================
+      // Here we create variables for tracking the number of sandwiches eaten
+      // ...
+      let pbjCount = 0
+      let gcCount = 0
+      let rbCount = 0
+
+      let countObject = {
+        pbjCount: 1,
+        gcCount: 1,
+        rbCount: 1  
+      }
+      // ...
+      // FUNCTIONS
+      // ====================================================================
+      // Here we create various on "click" functions which capture the clicks
+      // Inside each click event is the code to create an alert, update the counter, then show the updated count.
+      // ...
+      $(document).on('click', '.mySandwiches', function () {
+        let prefix = $(this).attr('id')
+        let key = prefix + 'Count'
+        let sandwichCount = countObject[key]++
+        console.log(`${prefix.toUpperCase()}'s Eaten : ${sandwichCount}`)
+      })
+
+      $('#addSandwich').on('click', function () {
+        event.preventDefault()
+        
+        const sandwich = $('#sandwich').val().trim()
+
+        const prefix = sandwich[0] + sandwich[1]
+        
+        countObject[prefix.toLowerCase() + 'Count'] = 1
+        
+        console.log(countObject)
+
+        $('.sandwichList').append(`<h3 id="${prefix.toLowerCase()}" class="mySandwiches">${sandwich}</h3>`)
+
+        $('#sandwich').val('')
+      })
+      // ...
+      // $('#emptyStomach').on('click', function () {
+      //   pbjCount = 0
+      //   gcCount = 0
+      //   rbCount = 0
+      //   console.log('Flush')
+      // })
+    });
+
+  </script>
+
+</body>
+
+</html>

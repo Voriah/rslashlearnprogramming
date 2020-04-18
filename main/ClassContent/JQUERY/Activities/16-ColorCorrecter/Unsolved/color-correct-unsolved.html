@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Correct Color Picker</title>
+
+  <!-- Bootstrap File -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+
+  <!-- JQuery -->
+  <script src="https://code.jquery.com/jquery.js"></script>
+
+  <style>
+    #rand-target-color,
+    #color-picker li {
+      font-size: 24px;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div class="container">
+    <h2>Correct Color Picker</h2>
+    <p>Pick the
+      <b>color</b> of the word shown from the list below it.</p>
+
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">
+
+          <!-- Create random target color -->
+          <span id="target-color">
+          </span>
+
+        </h3>
+      </div>
+      <div class="card-body">
+
+        <!-- Create colors to pick -->
+        <ul class="list-unstyled" id="color-picker">
+        </ul>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let colors = ['red', 'blue', 'green', 'pink', 'yellow', 'orange', 'magenta', 'brown', 'black', 'lightblue']
+    let color
+
+    function myWord() {
+      let text = colors[Math.floor(Math.random() * colors.length)]
+      color = colors[Math.floor(Math.random() * colors.length)]
+      $('#target-color').text(text)
+      $('#target-color').css('color', color)
+    }
+    
+    function otherWords() {
+      $('#color-picker').empty()
+      // colors = shuffle(colors);
+      colors.sort(function () {
+        return 0.5 - Math.random();
+      })
+      colors.forEach(color => {
+        // let text = colors[Math.floor(Math.random() * colors.length)]
+        let randColor = colors[Math.floor(Math.random() * colors.length)]
+        $('#color-picker').append(`
+        <li class="someColor" data-color="${randColor}" style="color:${randColor}">${color}</li>
+        `)
+      });
+    }
+
+    $(document).on('click', '.someColor', function () {
+      let text = $(this).text()
+      if (text === color) {
+        alert('You Win!')
+        myWord()
+        otherWords()
+      } else {
+        alert('Wrong')
+        myWord()
+        otherWords()
+      }
+    })
+
+    myWord()
+    otherWords()
+  </script>
+</body>
+
+</html>

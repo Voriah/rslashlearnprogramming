@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Buzzfeed</title>
+  <style>
+    .articleImage {
+      width: 300px;
+      height: 200px;
+    }
+
+    .content {
+      margin-top: 20px;
+      margin-left: 50px;
+      margin-right: 50px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="content">
+  </div>
+  <script src='https://code.jquery.com/jquery-3.3.1.js' integrity='sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=' crossorigin='anonymous'></script>
+  <script>
+    // 2531a8a82f2846bcbff2c54d8f607620
+    let url = 'https://newsapi.org/v2/everything?sources=buzzfeed&apiKey=2531a8a82f2846bcbff2c54d8f607620'
+
+    fetch(url)
+      .then(function (r) { return r.json() })
+      .then(function (r) {
+        r.articles.forEach(function (article) {
+          let descript = article.description.split(' V')
+          let item = document.createElement('div')
+          item.innerHTML = `
+          <img class="articleImage" src="${article.urlToImage}" alt="buzzPic">
+          <h3>${article.title}</h3>
+          <h5>${descript[0]} <a href="${article.url}">V${descript[1]}</a></h5>
+          <p>by ${article.author}</p>
+          <hr>
+          `
+          document.querySelector('.content').appendChild(item)
+        })
+      })
+      .catch(function (e) { console.error(e) })
+
+    $.get(url)
+      .then(function (r) {
+        r.articles.forEach(function (article) {
+          let descript = article.description.split(' V')
+          $('.content').append(`
+          <div>
+            <img class="articleImage" src="${article.urlToImage}" alt="buzzPic">
+            <h3>${article.title}</h3>
+            <h5>${descript[0]} <a href="${article.url}">V${descript[1]}</a></h5>
+            <p>by ${article.author}</p>
+            <hr>
+          </div>
+        `)
+        });
+      })
+      .catch(function (e) { console.error(e) })
+  </script>
+</body>
+
+</html>

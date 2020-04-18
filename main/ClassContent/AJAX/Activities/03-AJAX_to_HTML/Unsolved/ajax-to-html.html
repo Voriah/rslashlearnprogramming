@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Favorite Movies</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css" />
+</head>
+
+<body>
+  <div class="container">
+    <h2>Basic Table</h2>
+    <p>The .table class adds basic styling (light padding and only horizontal dividers) to a table:</p>
+    <form>
+      <label for="title">Movie Title</label>
+      <input type="text" name="title" id="movieTitle">
+      <button class="btn btn-primary submitMovie">Add Movie</button>
+    </form>
+    <br>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Movie Name</th>
+          <th scope="col">Year</th>
+          <th scope="col">Actors</th>
+          <th scope="col">Rating</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody class="movieTable">
+        <!-- Insert movie rows here -->
+
+      </tbody>
+    </table>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    // The below code fills in the first row of the table
+    function getMovie(movie) {
+      $.get(`https://www.omdbapi.com/?t=${movie}&apikey=trilogy`)
+        .then(function (r) {
+          console.log(r)
+          $('.movieTable').append(`
+            <tr id="${r.imdbID}">
+              <td>${r.Title}</td>
+              <td>${r.Year}</td>
+              <td>${r.Actors}</td>
+              <td>${r.Rated}</td>
+              <td><button class="btn btn-danger deleteBtn" data-movie="${r.imdbID}">delete</button></td>
+            </tr>
+        `)
+        })
+        .catch(function (e) {
+          console.error(e)
+        })
+    }
+
+    $('.submitMovie').on('click', function () {
+      event.preventDefault()
+      getMovie($('#movieTitle').val())
+      $('#movieTitle').val('')
+    })
+
+    $(document).on('click', '.deleteBtn',function () {
+      let id = '#' + $(this).attr('data-movie')
+      $(id).remove()
+    })
+  </script>
+</body>
+
+</html>

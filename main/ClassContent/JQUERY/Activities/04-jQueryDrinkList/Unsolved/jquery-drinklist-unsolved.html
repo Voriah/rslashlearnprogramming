@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>JavaScript Content!</title>
+</head>
+
+<body>
+
+  <h1>Drink Selection!</h1>
+  <hr>
+
+  <div id="drink-options"></div>
+  <script src='https://code.jquery.com/jquery-3.3.1.js' integrity='sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=' crossorigin='anonymous'></script>
+  <script type="text/javascript">
+
+    var drinkList = [
+      "Coffee: $5",
+      "Espresso: $7",
+      "Cappuccino: $6",
+      "Latte: $4",
+      "Tea: $3",
+      "Ice Coffee: $6"
+    ];
+
+    for (let i = 0; i < drinkList.length; i++) {
+      if (i === drinkList.length - 1) {
+        $('#drink-options').append(`<h4>${i + 1}. : ${drinkList[i]} (There are no more drinks!)</h4>`)
+      } else {
+        $('#drink-options').append(`<h4>${i + 1}. : ${drinkList[i]} (The Next Drink is ${drinkList[i + 1]})</h4>`)
+      }
+    }
+
+    drinkList.forEach(function (drink, i, arr) {
+      if (i === arr.length - 1) {
+        $('#drink-options').append(`<h4>${i + 1}. : ${drink} (There are no more drinks!)</h4>`)
+      } else {
+        $('#drink-options').append(`<h4>${i + 1}. : ${drink} (The Next Drink is ${arr[i + 1]})</h4>`)
+      }
+    })
+
+    // Using JavaScript programmatically append each drinkList item to the "drink-options" div
+    // HINT: you will need a for loop to go over each element in the list
+
+
+  </script>
+
+</body>
+
+</html>

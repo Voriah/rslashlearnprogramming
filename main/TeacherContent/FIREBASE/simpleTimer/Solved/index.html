@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    
+  const tenSeconds = _ => {
+    return new Promise((res, rej) => {
+    setTimeout(_ => res('Ten Seconds Have Passed!'), 10000)
+    })
+  }
+
+  const fiveSeconds = _ => {
+    return new Promise((res, rej) => {
+    setTimeout(_ => res('Five More Seconds Have Passed!'), 5000)
+    })
+  }
+  
+  const threeSeconds = _ => {
+    return new Promise((res, rej) => {
+    setTimeout(_ => res('Three More Seconds Have Passed!'), 3000)
+    })
+  }
+  
+  const oneSecond = _ => {
+    return new Promise((res, rej) => {
+    setTimeout(_ => res('One More Seconds Have Passed!'), 1000)
+    })
+  }
+
+  const timer = async _ => {
+    try {
+      alert(await tenSeconds())
+      alert(await fiveSeconds())
+      alert(await threeSeconds())
+      alert(await oneSecond())
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  timer()
+  </script>
+</body>
+</html>

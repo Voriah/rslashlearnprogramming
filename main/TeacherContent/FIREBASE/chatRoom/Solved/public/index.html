@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB'
+    crossorigin='anonymous'>
+  <style>
+    body {
+      background-color: rgb(236, 236, 236)
+    }
+
+    #chatInterface {
+      margin-top: 50px;
+    }
+
+    #chatRoom {
+      margin-top: 50px;
+      padding-top: 10px;
+      height: 500px;
+      background-color: white;
+      overflow-y: scroll;
+    }
+
+    .msgThingME {
+      margin-top: 5px;
+      margin-left: 150px;
+      width: 150px;
+      border: 2px solid rgb(64, 64, 255);
+      background-color: rgb(64, 64, 255);
+      color: white;
+      padding: 15px 5px 0px 15px;
+      border-radius: 25% 25% 0% 25%;
+    }
+
+    .msgThingYOU {
+      margin-top: 5px;
+      border: 2px solid rgb(192, 192, 192);
+      background-color: rgb(192, 192, 192);
+      color: white;
+      padding: 5px;
+      border-radius: 25% 25% 25% 0%;
+      width: 150px;
+      padding: 15px 5px 0px 15px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div id="chatInterface" class="col-md-6 offset-3">
+        <h1>Chat Room App</h1>
+        <p id="user">Welcome! Please Enter Your Information Below.</p>
+        <form>
+          <div class="form-row align-items-center">
+            <div class="col-6">
+              <label for="name">Name</label>
+              <input type="text" class="form-control mb-2" id="name" placeholder="Jane Doe">
+            </div>
+            <div class="col-6">
+              <label for="username">Username</label>
+              <div class="input-group mb-2">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">@</div>
+                </div>
+                <input type="text" class="form-control" id="username" placeholder="Username">
+              </div>
+            </div>
+          </div>
+          <div class="form-row align-items-center">
+            <div class="col-6">
+              <label for="message">Message</label>
+              <textarea class="form-control" id="message" rows="3"></textarea>
+            </div>
+            <div class="col-6">
+              <button type="submit" class="btn btn-primary mb-2" onclick="sendMessage()">Submit</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row">
+      <div id="chatRoom" class="col-md-10 offset-1">
+      </div>
+    </div>
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/5.4.2/firebase.js"></script>
+  <script>
+    const alreadyHere = _ => {
+      if (localStorage.getItem('name')) {
+        document.querySelector('#name').setAttribute('placeholder', localStorage.getItem('name'))
+        document.querySelector('#username').setAttribute('placeholder', localStorage.getItem('username'))
+        document.querySelector('#user').innerHTML = `Welcome <b>${localStorage.getItem('name')}</b>! Please Enter Your Message Below.`
+        document.querySelector('#username').setAttribute('disabled', true)
+        document.querySelector('#name').setAttribute('disabled', true)
+        return true
+      } else { return false }
+    }
+
+    const scrollBottom = _ => {
+      document.querySelector('#chatRoom').scrollTop = document.querySelector('#chatRoom').scrollHeight
+    }
+    const emptyElem = selector => {
+      document.querySelector(selector).innerHTML = ''
+    }
+
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyBmJjTJAfh_Ac-Avjv6Ner04beQyEgsaMk",
+      authDomain: "chatroomex-9d442.firebaseapp.com",
+      databaseURL: "https://chatroomex-9d442.firebaseio.com",
+      projectId: "chatroomex-9d442",
+      storageBucket: "chatroomex-9d442.appspot.com",
+      messagingSenderId: "879799709906"
+    };
+    firebase.initializeApp(config);
+
+    const db = firebase.database()
+    const msgRef = db.ref('messages')
+
+    const sendMessage = _ => {
+      event.preventDefault()
+
+      if (!alreadyHere()) {
+        localStorage.setItem('name', document.querySelector('#name').value)
+        localStorage.setItem('username', document.querySelector('#username').value)
+      }
+      msgRef.push({
+        name: alreadyHere() ? localStorage.getItem('name') : document.querySelector('#name').value,
+        username: alreadyHere() ? localStorage.getItem('username') : document.querySelector('#username').value,
+        message: document.querySelector('#message').value
+      })
+    }
+
+    msgRef.on('value', snap => {
+
+      let data = snap.val()
+
+      scrollBottom()
+      emptyElem('#chatRoom')
+
+      for (const key in data) {
+
+        if (data.hasOwnProperty(key)) {
+
+          const item = data[key];
+
+          let piece = document.createElement('div')
+
+          piece.innerHTML = `
+            <h5><i>${item.username}</i></h5>
+            <p>${item.message}</p>
+          `
+
+          if (item.name && item.name === localStorage.getItem('name')) {
+            piece.setAttribute('class', 'float-right msgThingME')
+          } else { piece.setAttribute('class', 'msgThingYOU') }
+
+          document.querySelector('#chatRoom').appendChild(piece)
+        }
+      }
+    })
+
+
+    alreadyHere()
+    
+
+  </script>
+</body>
+
+</html>

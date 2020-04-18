@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB'
+    crossorigin='anonymous'>
+</head>
+
+<body>
+  <br>
+  <br>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 align-center">
+        <form>
+          <div class="form-group row">
+            <label class="col-2 col-form-label" for="name">name</label>
+            <div class="col-10">
+              <input class="form-control" type="text" name="name" id="uName">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-2 col-form-label" for="age">age</label>
+            <div class="col-10">
+              <input class="form-control" type="number" name="age" id="uAge">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-2 col-form-label" for="address">address</label>
+            <div class="col-10">
+              <input class="form-control" type="text" name="address" id="uAddress">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-2 col-form-label" for="country">country</label>
+            <div class="col-10">
+              <input class="form-control" type="text" name="country" id="uCountry">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-2 col-form-label" for="number">number</label>
+            <div class="col-10">
+              <input class="form-control" type="number" name="number" id="uNumber">
+            </div>
+          </div>
+          <button class="btn btn-primary" type="submit" onclick="addUser()">Submit</button>
+        </form>
+      </div>
+    </div>
+    <br>
+    <hr>
+    <br>
+    <div class="row">
+      <div id="userList" class="col-md-12 align-center"></div>
+    </div>
+  </div>
+  <script src="https://www.gstatic.com/firebasejs/5.4.2/firebase.js"></script>
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyCKnUzEN6mAtuUI4Zp-K6Hrrnd5YHdMRKw",
+      authDomain: "quintonexdb.firebaseapp.com",
+      databaseURL: "https://quintonexdb.firebaseio.com",
+      projectId: "quintonexdb",
+      storageBucket: "quintonexdb.appspot.com",
+      messagingSenderId: "295871437571"
+    }
+    firebase.initializeApp(config)
+
+    let database = firebase.database()
+
+    let userRef = database.ref('/users')
+
+    const phonify = number => {
+      let phoneNum
+
+      if (number.length === 11) {
+        number.splice(0, 1)
+      }
+      let num = number.split('')
+      num.forEach((digit, index) => {
+        switch(index) {
+          case 2:
+          phoneNum += (digit + ') ')
+          break
+          case 0:
+          phoneNum += ('(' + digit)
+          break
+          case 5:
+          phoneNum += (digit + '-')
+          break
+          default: 
+          phoneNum += digit
+          break
+        }
+      })
+      return phoneNum
+    }
+
+    const addUser = _ => {
+      event.preventDefault()
+      userRef.push({
+        name: document.querySelector('#uName').value,
+        age: document.querySelector('#uAge').value,
+        address: document.querySelector('#uAddress').value,
+        country: document.querySelector('#uCountry').value,
+        number: document.querySelector('#uNumber').value,
+      })
+    }
+
+    userRef.on('child_added', data => {
+      const user = data.val()
+      let userElement = document.createElement('div')
+      userElement.innerHTML = `
+            <div class="card">
+              <div class="card-header">
+                ${phonify(user.number)}
+              </div>
+              <br>
+              <div class="card-block">
+                <h4 class="card-title">&nbsp; ${user.name}</h4>
+                <p class="card-text">&nbsp; Age: ${user.age}</p>
+                <p class="card-text">&nbsp; Address: ${user.address}, ${user.country}</p>
+                <br>
+              </div>
+            </div>
+            <br>`
+      document.querySelector('#userList').appendChild(userElement)
+    })
+  </script>
+</body>
+
+</html>

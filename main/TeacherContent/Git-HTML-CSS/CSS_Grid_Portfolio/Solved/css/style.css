@@ -1,0 +1,20 @@
+.container {
+    display: grid;
+    grid-column-gap: 10px;
+    grid-row-gap: 10px;
+  }
+  header {
+    grid-column-start: 1;
+    grid-column-end: 4;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    text-align: center
+  }
+  #main-bio {
+    grid-column-start: 1;
+    grid-column-end: 2;
+  }
+  #contact-info {
+    grid-column-start: 3;
+    
+  }

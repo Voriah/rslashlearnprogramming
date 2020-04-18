@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<body>
+  <script>
+    
+    let movie = {
+      "Title": "Goodfellas",
+      "Year": "1990",
+      "Rated": "R",
+      "Released": "21 Sep 1990",
+      "Runtime": "146 min",
+      "Genre": "Crime, Drama",
+      "Director": "Martin Scorsese",
+      "Writer": "Nicholas Pileggi (book), Nicholas Pileggi (screenplay), Martin Scorsese (screenplay)",
+      "Actors": "Robert De Niro, Ray Liotta, Joe Pesci, Lorraine Bracco",
+      "Plot": "The story of Henry Hill and his life in the mob, covering his relationship with his wife Karen Hill and his mob partners Jimmy Conway and Tommy DeVito in the Italian-American crime syndicate.",
+      "Language": "English, Italian",
+      "Country": "USA",
+      get countryYear () {
+        return `This movie was released in ${this.Year} and originated in the ${this.Country}`
+      },
+      set countryYear(data) {
+        this.Year = data[0]
+        this.Country = data[1]
+      },
+      get directorAndWriters () {
+        return `This movie was directed by ${this.Director} and was written by ${this.Writer}`
+      },
+      set directorAndWriters (data) {
+        this.Director = data[0],
+        this.Writer = data[1]
+      },
+      get ratingAndRuntime () {
+        return `The movie is rated ${this.Rated} and has a runtime of approximately ${this.Runtime}`
+      },
+      set ratingAndRuntime (data) {
+        this.Rated = data[0]
+        this.Runtime = data[1]
+      }
+    }
+
+    movie.countryYear = ['1995', 'UK']
+    console.log(movie.countryYear)
+
+    movie.directorAndWriters = ['Scooby Doo', 'Some Random Guy']
+    console.log(movie.directorAndWriters)
+
+    movie.ratingAndRuntime = ['G', '30 Seconds']
+    console.log(movie.ratingAndRuntime)
+    
+  </script>
+</body>
+
+</html>
